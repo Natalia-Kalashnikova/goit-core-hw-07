@@ -1,4 +1,5 @@
 """This module defines the Field base class and specific field types such as Name and Phone."""
+from datetime import datetime
 
 class Field:
     """ Base class for all fields (e.g. name, phone)"""
@@ -24,3 +25,16 @@ class Phone(Field):
             # Validate that phone number is exactly 10 digits
             raise ValueError("Phone number must be exactly 10 digits.")
         super().__init__(value)# Initialize the base class
+
+
+class Birthday(Field):
+    """ Represents a birthday date with validation """
+    def __init__(self, value):
+        try:
+            date_obj = datetime.strptime(value, "%d.%m.%Y").date()
+        except ValueError:
+            raise ValueError("Invalid date format. Use DD.MM.YYYY")
+        super().__init__(date_obj)
+
+    def __str__(self):
+        return self.value.strftime("%d.%m.%Y")
