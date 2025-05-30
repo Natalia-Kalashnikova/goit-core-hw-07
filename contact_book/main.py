@@ -1,7 +1,9 @@
-"""This script implements a console assistant bot for managing contacts.
+"""
+This script implements a console assistant bot for managing contacts.
 It supports adding, changing, and showing contacts, as well as managing birthdays.
 All data is managed via AddressBook and Record classes.
-New functionality includes birthday management and upcoming birthday queries."""
+New functionality includes birthday management and upcoming birthday queries.
+"""
 
 from models.record import Record
 from book.addressbook import AddressBook
