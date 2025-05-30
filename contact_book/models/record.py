@@ -33,8 +33,9 @@ class Record:
             if phone.value == phone_number:
                 return phone
         return None
-    
+
     def add_birthday(self, birthday_str):
+        """Adds or updates the birthday for this contact."""
         self.birthday = Birthday(birthday_str)
 
     def __str__(self):

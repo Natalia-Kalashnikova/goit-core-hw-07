@@ -1,7 +1,7 @@
 """This module defines the AddressBook class for managing contact records."""
 
 from collections import UserDict
-from datetime import datetime, timedelta   
+from datetime import datetime, timedelta
 
 class AddressBook(UserDict):
     """Stores and manages contact records (Record instances)"""
@@ -50,7 +50,7 @@ class AddressBook(UserDict):
                     "birthday": bday_this_year.strftime("%d.%m.%Y")
                 })
 
-        return upcoming        
+        return upcoming
 
     def __str__(self):
         """String representation of the entire address book"""
