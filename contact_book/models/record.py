@@ -1,12 +1,13 @@
 """This module defines the Record class for managing contact data."""
 
-from models.fields import Name, Phone
+from models.fields import Name, Phone, Birthday
 
 class Record:
     """ Represents a contact record with a name and a list of phone numbers"""
     def __init__(self, name):
         self.name = Name(name) # Store contact name as a Name object
         self.phones = []       # List of Phone objects
+        self.birthday = None
 
     def add_phone(self, phone_number):
         """Add a new phone number to the record"""
@@ -32,7 +33,12 @@ class Record:
             if phone.value == phone_number:
                 return phone
         return None
+    
+    def add_birthday(self, birthday_str):
+        self.birthday = Birthday(birthday_str)
 
     def __str__(self):
         """String representation of the record"""
-        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
+        phones_str = '; '.join(p.value for p in self.phones)
+        birthday_str = f", birthday: {self.birthday}" if self.birthday else ""
+        return f"Contact name: {self.name.value}, phones: {phones_str}{birthday_str}"
