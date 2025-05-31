@@ -8,17 +8,20 @@ from models.record import Record
 from book.addressbook import AddressBook
 
 def input_error(func):
-    """Decorator to handle input errors."""
-    def inner(*args, **kwargs):
+    """
+    Decorator for handling errors in command handlers.
+    Returns user-friendly error messages for common exceptions.
+    """
+    def wrapper(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except ValueError:
-            return "Give me name and phone please."
         except IndexError:
-            return "Enter user name."
-        except KeyError as e:
-            return str(e)
-    return inner
+            return "Error: Not enough arguments."
+        except KeyError:
+            return "Error: Contact not found."
+        except ValueError as e:
+            return f"Error: {e}"
+    return wrapper
 
 def parse_input(user_input: str) -> tuple:
     """
@@ -149,7 +152,7 @@ def birthdays(_args, book: AddressBook) -> str:
         return "No upcoming birthdays."
     result = []
     for item in upcoming:
-        result.append(f"{item['name']}: {item['birthday']}")
+        result.append(f"{item['name']}: birthday {item['birthday']}, greet on {item['greet_date']}")
     return "\n".join(result)
 
 def print_help():
