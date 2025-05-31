@@ -1,5 +1,4 @@
-"""
-This script implements a console assistant bot for managing contacts.
+"""This script implements a console assistant bot for managing contacts.
 It supports adding, changing, and showing contacts, as well as managing birthdays.
 All data is managed via AddressBook and Record classes.
 New functionality includes birthday management and upcoming birthday queries.
@@ -9,22 +8,17 @@ from models.record import Record
 from book.addressbook import AddressBook
 
 def input_error(func):
-    """
-    Decorator for handling errors in command handlers.
-    Returns user-friendly error messages for common exceptions.
-    """
-    def wrapper(*args, **kwargs):
+    """Decorator to handle input errors."""
+    def inner(*args, **kwargs):
         try:
             return func(*args, **kwargs)
+        except ValueError:
+            return "Give me name and phone please."
         except IndexError:
-            return "Error: Not enough arguments."
-        except KeyError:
-            return "Error: Contact not found."
-        except ValueError as e:
-            return f"Error: {e}"
-        except Exception as e:
-            return f"Unexpected error: {e}"
-    return wrapper
+            return "Enter user name."
+        except KeyError as e:
+            return str(e)
+    return inner
 
 def parse_input(user_input: str) -> tuple:
     """
@@ -141,7 +135,7 @@ def show_birthday(args, book: AddressBook) -> str:
     return f"Birthday for {name}: {record.birthday}"
 
 @input_error
-def birthdays(args, book: AddressBook) -> str:
+def birthdays(_args, book: AddressBook) -> str:
     """
     Shows contacts with birthdays in the next 7 days.
     Args:

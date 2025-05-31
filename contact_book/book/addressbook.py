@@ -1,7 +1,7 @@
 """This module defines the AddressBook class for managing contact records."""
 
 from collections import UserDict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 class AddressBook(UserDict):
     """Stores and manages contact records (Record instances)"""
@@ -18,10 +18,19 @@ class AddressBook(UserDict):
         if name in self.data:
             del self.data[name]
 
+    def adjust_for_weekend(self, birthday):
+        """
+        Shift birthday to next Monday if it falls on a weekend.
+        """
+        if birthday.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
+            days_to_monday = 7 - birthday.weekday()
+            birthday += timedelta(days=days_to_monday)
+        return birthday
+
     def get_upcoming_birthdays(self):
         """Return list of contacts with birthdays in the next 7 days including today,
         adjusting birthdays falling on weekends to next Monday."""
-        today = datetime.today().date()
+        today = date.today()
         end_date = today + timedelta(days=6)  # 7 days including today
 
         upcoming = []
@@ -40,14 +49,12 @@ class AddressBook(UserDict):
 
             # Check if birthday is within next 7 days
             if today <= bday_this_year <= end_date:
-                # If birthday falls on weekend, move to next Monday
-                if bday_this_year.weekday() >= 5:  # 5 = Saturday, 6 = Sunday
-                    days_to_monday = 7 - bday_this_year.weekday()
-                    bday_this_year += timedelta(days=days_to_monday)
+                # Adjust for weekend using the dedicated function
+                congratulation_date = self.adjust_for_weekend(bday_this_year)
 
                 upcoming.append({
                     "name": record.name.value,
-                    "birthday": bday_this_year.strftime("%d.%m.%Y")
+                    "birthday": congratulation_date.strftime("%d.%m.%Y")
                 })
 
         return upcoming
