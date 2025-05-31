@@ -1,7 +1,7 @@
 """This module defines the AddressBook class for managing contact records."""
 
 from collections import UserDict
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 
 class AddressBook(UserDict):
     """Stores and manages contact records (Record instances)"""
